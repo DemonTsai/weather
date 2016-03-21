@@ -4,35 +4,18 @@ $(function()
 {
     var weatherService = new weatherDataService();
 
-    weatherService.getCurrentWeatherData().success(
-        function(weatherData)
+    weatherService.getMonthWeatherData().success(
+        function(monthWeatherData)
         {
-            console.log('Get current weather info.')
-            console.log(weatherService.getWeatherInfo(weatherData));
-        }
-    )
+            var monthWeatherInfo = weatherService.getMonthWeatherInfo(monthWeatherData);
+        });
 
     weatherService.getWeekWeatherData().success(
-        function(weatherData)
+        function(weekWeatherData)
         {
-            var weekWeatherInfo = [];
+            var weekWeatherInfo = weatherService.getWeekWeatherInfo(weekWeatherData);
 
-            _.map(weatherData.list, function(timeSlotWeather)
-            {
-                var weatherInfo = weatherService.getWeatherInfo(timeSlotWeather);
-
-                if(_.find(weekWeatherInfo, { date: weatherInfo.date }) === undefined)
-                {
-                    weekWeatherInfo.push({ date : weatherInfo.date, info : [] });
-                }
-
-                var idx = weekWeatherInfo.length-1;
-
-                if(_.find(weekWeatherInfo[idx].info, { time: weatherInfo.time }) === undefined )
-                {
-                    weekWeatherInfo[idx].info.push(weatherInfo);
-                }
-            });
+            console.log(weekWeatherInfo);
 
             painWeatherPreview();
             painWeatherDetail(0);
@@ -84,9 +67,9 @@ $(function()
                         var content =
                             '<tr>' +
                             '<td>' + value.time + '</td>' +
-                            '<td>' + Math.round((value.main.temp - 273.15)*10)/10 + '</td>' +
-                            '<td>' + Math.round((value.main.temp_min - 273.15)*10)/10 + '</td>' +
-                            '<td>' + Math.round((value.main.temp_max - 273.15)*10)/10 + '</td>' +
+                            '<td>' + value.main.temp + '</td>' +
+                            '<td>' + value.main.temp_min + '</td>' +
+                            '<td>' + value.main.temp_max + '</td>' +
                             '<td>' + value.main.humidity + '</td>' +
                             '<td>' + value.main.pressure + '</td>' +
                             '<td>' + value.weather[0].main + '</td>' +
@@ -98,8 +81,5 @@ $(function()
                         $('#js-weather-detail-table').append(content);
                     });
             }
-
-
-            console.log(weekWeatherInfo);
         });
 });

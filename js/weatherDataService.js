@@ -4,56 +4,93 @@ function weatherDataService()
 {
     this.Service =
     {
+        getMonthWeatherData : getMonthWeatherData,
         getWeekWeatherData : getWeekWeatherData,
         getCurrentWeatherData : getCurrentWeatherData,
-        getWeatherInfo : getWeatherInfo
+        getMonthWeatherInfo : getMonthWeatherInfo,
+        getWeekWeatherInfo : getWeekWeatherInfo
     };
 
     return this.Service;
 
+    function getMonthWeatherData()
+    {
+        return $.get('http://api.openweathermap.org/data/2.5/forecast/daily?q=Taipei&units=metric&cnt=16&appid=b1b15e88fa797225412429c1c50c122a');
+    }
+
     function getWeekWeatherData()
     {
-        return $.get('http://api.openweathermap.org/data/2.5/forecast?q=Taipei,TW&appid=b1b15e88fa797225412429c1c50c122a');
+        return $.get('http://api.openweathermap.org/data/2.5/forecast?q=Taipei,TW&units=metric&appid=b1b15e88fa797225412429c1c50c122a');
     }
 
     function getCurrentWeatherData()
     {
-        return $.get('http://api.openweathermap.org/data/2.5/weather?q=Taipei,TW&appid=b1b15e88fa797225412429c1c50c122a');
+        return $.get('http://api.openweathermap.org/data/2.5/weather?q=Taipei,TW&units=metric&appid=b1b15e88fa797225412429c1c50c122a');
     }
 
-    function getWeatherInfo(weatherData)
+    function getMonthWeatherInfo(monthWeatherData)
     {
-        var weatherInfo = {};
-        var timeValue = (weatherData.dt_txt !== undefined) ?_.split(weatherData.dt_txt, ' ') :weatherData.dt;
+        var monthWeatherInfo = [];
 
-        //Set time & date
-        if(timeValue instanceof Array)
+        monthWeatherInfo.country = monthWeatherData.city.country;
+        monthWeatherInfo.city = monthWeatherData.city.name;
+        monthWeatherInfo.coordinate = monthWeatherData.city.coord;
+
+        _.map(monthWeatherData.list, function(dayWeatherData)
         {
-            weatherInfo.date = timeValue[0];
-            weatherInfo.time = timeValue[1];
-        }
-        else
+            var dayWeatherInfo = {};
+            var timeValue = new Date(dayWeatherData.dt * 1000);
+            var date = timeValue.getFullYear() + '-' + (timeValue.getMonth() + 1) + '-' + timeValue.getDate();
+            var time = timeValue.getHours() + ':' + timeValue.getMinutes() + ':' + timeValue.getSeconds();
+
+            dayWeatherInfo.date = date;
+            dayWeatherInfo.time = time;
+            dayWeatherInfo.temp = dayWeatherData.temp;
+            dayWeatherInfo.pressure = dayWeatherData.pressure;
+            dayWeatherInfo.humidity = dayWeatherData.humidity;
+            dayWeatherInfo.weather = dayWeatherData.weather;
+            dayWeatherInfo.speed = dayWeatherData.speed;
+            dayWeatherInfo.deg = dayWeatherData.deg;
+            dayWeatherInfo.clouds = dayWeatherData.clouds;
+            dayWeatherInfo.rain = dayWeatherData.rain;
+
+            monthWeatherInfo.push(dayWeatherInfo);
+        });
+
+        return monthWeatherInfo;
+    }
+
+    function getWeekWeatherInfo(weekWeatherData)
+    {
+        var weekWeatherInfo = [];
+
+        weekWeatherInfo.country = weekWeatherData.city.country;
+        weekWeatherInfo.city = weekWeatherData.city.name;
+        weekWeatherInfo.coordinate = weekWeatherData.city.coord;
+
+        _.map(weekWeatherData.list, function(timeSlotWeather)
         {
-            weatherInfo.time = timeValue;
-        }
+            var timeSlotInfo = {};
+            var timeValue = _.split(timeSlotWeather.dt_txt, ' ');
+            var date = timeValue[0], time = timeValue[1];
+            var dayWeatherInfo = _.find(weekWeatherInfo, { date : date });
 
-        //Fetch snow info
-        if(weatherData.snow)
-        {
-            weatherInfo.snow = weatherData.snow;
-        }
+            timeSlotInfo.time = time;
+            timeSlotInfo.weather = timeSlotWeather.weather;
+            timeSlotInfo.clouds = timeSlotWeather.clouds;
+            timeSlotInfo.main = timeSlotWeather.main;
+            timeSlotInfo.wind = timeSlotWeather.wind;
+            timeSlotInfo.rain = timeSlotWeather.rain;
 
-        //Fetch rain info
-        if(weatherData.rain)
-        {
-            weatherInfo.rain = weatherData.rain;
-        }
+            if(dayWeatherInfo === undefined)
+            {
+                dayWeatherInfo = { date : date, info : [] };
+                weekWeatherInfo.push(dayWeatherInfo);
+            }
 
-        weatherInfo.weather = weatherData.weather;
-        weatherInfo.clouds = weatherData.clouds;
-        weatherInfo.main = weatherData.main;
-        weatherInfo.wind = weatherData.wind;
+            dayWeatherInfo.info.push(timeSlotInfo);
+        });
 
-        return weatherInfo;
+        return weekWeatherInfo;
     }
 }
