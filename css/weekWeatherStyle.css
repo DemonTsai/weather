@@ -1,0 +1,15 @@
+.weather-pic{
+    width: 140px;
+    height: 150px;
+    background-image: url("../img/icons.png");
+    background-size: 840px 1200px;
+    background-repeat: no-repeat;
+    margin: 20px auto;
+}
+
+.weather-pic,-Rain{
+    background-position: -710px -300px;
+}
+.weather-state{
+    font-size: 30px;
+}
