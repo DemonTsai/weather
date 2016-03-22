@@ -15,17 +15,17 @@ function weatherDataService()
 
     function getMonthWeatherData()
     {
-        return $.get('http://api.openweathermap.org/data/2.5/forecast/daily?q=Taipei&units=metric&cnt=16&appid=b1b15e88fa797225412429c1c50c122a');
+        return $.get('http://api.openweathermap.org/data/2.5/forecast/daily?q=Taipei&units=metric&cnt=16&appid=7cd96eb82151316259beeeee9d2fe046');
     }
 
     function getWeekWeatherData()
     {
-        return $.get('http://api.openweathermap.org/data/2.5/forecast?q=Taipei,TW&units=metric&appid=b1b15e88fa797225412429c1c50c122a');
+        return $.get('http://api.openweathermap.org/data/2.5/forecast?q=Taipei,TW&units=metric&appid=7cd96eb82151316259beeeee9d2fe046');
     }
 
     function getCurrentWeatherData()
     {
-        return $.get('http://api.openweathermap.org/data/2.5/weather?q=Taipei,TW&units=metric&appid=b1b15e88fa797225412429c1c50c122a');
+        return $.get('http://api.openweathermap.org/data/2.5/weather?q=Taipei,TW&units=metric&appid=7cd96eb82151316259beeeee9d2fe046');
     }
 
     function getMonthWeatherInfo(monthWeatherData)
@@ -40,7 +40,7 @@ function weatherDataService()
         {
             var dayWeatherInfo = {};
             var timeValue = new Date(dayWeatherData.dt * 1000);
-            var date = timeValue.getFullYear() + '-' + (timeValue.getMonth() + 1) + '-' + timeValue.getDate();
+            var date = timeValue.getFullYear() + '.' + (timeValue.getMonth() + 1) + '.' + timeValue.getDate();
             var time = timeValue.getHours() + ':' + timeValue.getMinutes() + ':' + timeValue.getSeconds();
 
             dayWeatherInfo.date = date;

@@ -12,7 +12,7 @@ function analysisWeatherChart()
 
             for(var i=0 ; i<monthWeather.length ; i++)
             {
-                xday.push(monthWeather[i].date);
+                xday.push(monthWeather[i].date.substr(5, monthWeather[i].date.length-5));
                 ytemp.push(monthWeather[i].temp.day);
                 ytemp_min.push(monthWeather[i].temp.min);
                 ytemp_max.push(monthWeather[i].temp.max);
