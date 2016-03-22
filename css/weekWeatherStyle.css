@@ -10,6 +10,35 @@
 .weather-pic,-Rain{
     background-position: -710px -300px;
 }
-.weather-state{
-    font-size: 30px;
+
+.weather-pic.-Mist{
+    background-position: -700px -170px;
+}
+
+.weather-pic.-Clouds{
+    background-position: -130px -300px;
+}
+
+.weather-pic.-Clear{
+    background-position: -135px 0px;
+}
+
+.weather-pic.-Snow{
+
+}
+.weather-pic.-Extreme{
+
+}
+
+.weather-box{
+    cursor: pointer;
+}
+
+.weather-box.-active{
+    background: rgba(102, 201, 201, 0.3);
+}
+
+.weather-chart{
+    width:1000px;
+    margin:0 auto;
 }

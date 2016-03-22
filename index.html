@@ -14,7 +14,7 @@
                 <div w3-include-HTML="template/sideBar.html"></div>
                 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main" id="js-main">
                     <div class="main-content" w3-include-HTML="template/weekWeather.html" id="js-week-weather"></div>
-                    <div class="main-content" w3-include-HTML="template/monthWeather.html" id="js-month-weather" style="display:none;"></div>
+                    <div class="main-content" w3-include-HTML="template/analysisWeather.html" id="js-analysis-weather" style="display:none;"></div>
                 </div>
             </div>
         </div>
@@ -22,12 +22,18 @@
         <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
         <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.6.1/lodash.js"></script>
+        <script src="https://code.highcharts.com/highcharts.js"></script>
+		<script src="https://code.highcharts.com/modules/exporting.js"></script>
         <script type="text/javascript" src="js/w3-include-HTML.js"></script>
         <script type="text/javascript" src="js/sideBarController.js"></script>
         <script type="text/javascript" src="js/weatherDataService.js"></script>
         <script type="text/javascript" src="js/weekWeatherController.js"></script>
+        <script type="text/javascript" src="js/analysisWeatherController.js"></script>
         <script>
-
+            $(function()
+            {
+                weekWeatherController();
+            });
         </script>
     </body>
 </html>

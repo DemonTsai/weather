@@ -1,31 +1,80 @@
 'use strict';
 
-$(function()
+function weekWeatherController()
 {
     var weatherService = new weatherDataService();
-
-    weatherService.getMonthWeatherData().success(
-        function(monthWeatherData)
-        {
-            var monthWeatherInfo = weatherService.getMonthWeatherInfo(monthWeatherData);
-        });
 
     weatherService.getWeekWeatherData().success(
         function(weekWeatherData)
         {
             var weekWeatherInfo = weatherService.getWeekWeatherInfo(weekWeatherData);
 
-            console.log(weekWeatherInfo);
+            init();
+            clickEventHandler();
 
-            painWeatherPreview();
-            painWeatherDetail(0);
-            painWeatherIcon();
+            // $('#js-forecast-day-1').click(function(){ painWeatherDetail(0) });
+            // $('#js-forecast-day-2').click(function(){ painWeatherDetail(1) });
+            // $('#js-forecast-day-3').click(function(){ painWeatherDetail(2) });
+            // $('#js-forecast-day-4').click(function(){ painWeatherDetail(3) });
+            // $('#js-forecast-day-5').click(function(){ painWeatherDetail(4) });
 
-            $('#js-forecast-day-1').click(function(){ painWeatherDetail(0) });
-            $('#js-forecast-day-2').click(function(){ painWeatherDetail(1) });
-            $('#js-forecast-day-3').click(function(){ painWeatherDetail(2) });
-            $('#js-forecast-day-4').click(function(){ painWeatherDetail(3) });
-            $('#js-forecast-day-5').click(function(){ painWeatherDetail(4) });
+            function init()
+            {
+                successHandle();
+                painWeatherPreview();
+                painWeatherDetail(0);
+                painWeatherIcon();
+                painWeatherActive(1);
+            }
+
+            function clickEventHandler()
+            {
+                $('#js-forecast-day-1').click(
+                    function()
+                    {
+                        painWeatherDetail(0);
+                        painWeatherActive(1);
+                    });
+                $('#js-forecast-day-2').click(
+                    function()
+                    {
+                        painWeatherDetail(1);
+                        painWeatherActive(2);
+                    });
+                $('#js-forecast-day-3').click(
+                    function(){
+                        painWeatherDetail(2);
+                        painWeatherActive(3);
+                    });
+                $('#js-forecast-day-4').click(
+                    function()
+                    {
+                        painWeatherDetail(3);
+                        painWeatherActive(4);
+                    });
+                $('#js-forecast-day-5').click(
+                    function()
+                    {
+                        painWeatherDetail(4);
+                        painWeatherActive(5);
+                    });
+            }
+
+            function painWeatherActive(index)
+            {
+                $.each([1,2,3,4,5],
+                    function(k,i)
+                    {
+                        if(i === index)
+                        {
+                            $('#js-forecast-day-' + i).addClass('-active');
+                        }
+                        else
+                        {
+                            $('#js-forecast-day-' + i).removeClass('-active');
+                        }
+                    });
+            }
 
             function painWeatherIcon()
             {
@@ -81,5 +130,17 @@ $(function()
                         $('#js-weather-detail-table').append(content);
                     });
             }
-        });
-});
+    }).fail( function(){ failHandle(); } );
+
+    function successHandle()
+    {
+        $('#js-week-success').show();
+        $('#js-week-fail').hide();
+    }
+
+    function failHandle()
+    {
+        $('#js-week-success').hide();
+        $('#js-week-fail').show();
+    }
+};

@@ -49,7 +49,7 @@ function weatherDataService()
             dayWeatherInfo.pressure = dayWeatherData.pressure;
             dayWeatherInfo.humidity = dayWeatherData.humidity;
             dayWeatherInfo.weather = dayWeatherData.weather;
-            dayWeatherInfo.speed = dayWeatherData.speed;
+            dayWeatherInfo.wind = dayWeatherData.speed;
             dayWeatherInfo.deg = dayWeatherData.deg;
             dayWeatherInfo.clouds = dayWeatherData.clouds;
             dayWeatherInfo.rain = dayWeatherData.rain;
